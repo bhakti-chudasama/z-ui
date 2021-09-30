@@ -22,10 +22,8 @@ function validateMobile(str) {
     }
 }
 function validateFirstName(str) {
-    if (str.trim()!=" ") {
+    if (str.trim() != "") {
         alert("Please enter Your First Name");
         document.getElementById('txtFirstName').value = '';
-        // return false;
-    }
-    // return true;    
+    }    
 }

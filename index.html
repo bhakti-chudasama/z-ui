@@ -63,7 +63,7 @@
                 $(tblRow).appendTo("#info");
             });
         }
-        function saveContact() {
+        function saveContact() {          
             let newContact = {
                 "firstName": document.getElementById('txtFirstName').value,
                 "lastName": document.getElementById('txtLastName').value,
@@ -80,7 +80,7 @@
             contactData.unshift(newContact);
             bindDataToContactList();
 
-            alert('Contact saved successfully.!');
+            // alert('Contact saved successfully.!');
             clearData();
         }
         function clearData() {
