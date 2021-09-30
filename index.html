@@ -4,23 +4,17 @@
     <title>Zuru UI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="/assets/main.css">
-    <script src="/js/script.js"></script>
+
     <script>
         var contactData = [];
-        function highlightRow(x) {
-            x.style.backgroundColor = '#e6e6d5';
-            x.style.cursor = "pointer";
-        }
-        function removeHighlightRow(x) {
-            x.style.backgroundColor = "";
-            x.style.cursor = "auto";
-        }
+        var jq = $;
         function showDetailCard(contactIdx) {
             document.getElementById("divNewContact").style.display = "none";
             document.getElementById("divDetail").style.display = "block";
@@ -38,10 +32,6 @@
             <div class='row'><div class='col'>Company</div><div class='col'>${singleContact.company}</div></div>
             <div class='row'><div class='col'>Address</div><div class='col'>${singleContact.address}</div></div>`
             $(card).appendTo(".detail-card");
-        }
-        function newContact() {
-            document.getElementById("divDetail").style.display = "none";
-            document.getElementById("divNewContact").style.display = "block";
         }
         $(function () {
             var contacts = [];
@@ -63,31 +53,34 @@
                 $(tblRow).appendTo("#info");
             });
         }
-        function saveContact() {          
-            let newContact = {
-                "firstName": document.getElementById('txtFirstName').value,
-                "lastName": document.getElementById('txtLastName').value,
-                "email": document.getElementById('txtEmail').value,
-                "phoneNumber": document.getElementById('txtMobile').value,
-                "address": document.getElementById('txtAddress').value,
-                // "zip": document.getElementById('txtZip').value,
-                // "country": document.getElementById('txtCountry').value,
-                "company": document.getElementById('txtCompany').value,
-                "avatar": document.getElementById('txtAvatar').value,
-                "designation": document.getElementById('txtDesignation').value,
-                "department": document.getElementById('txtDepartment').value,
-            }
-            contactData.unshift(newContact);
-            bindDataToContactList();
-
-            // alert('Contact saved successfully.!');
-            // git branch checkin.
-            clearData();
-        }
         function clearData() {
             $('input:text').val('');
             document.getElementById("divNewContact").style.display = "none";
         }
+        $(document).ready(function(){  
+           $('#searchbox').keyup(function(){  
+                search_contact($(this).val());  
+           });  
+           function search_contact(value){  
+                $('#info .row').each(function(){  
+                     var found = 'false';  
+                     $(this).each(function(){  
+                          if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)  
+                          {  
+                               found = 'true';  
+                          }  
+                     });  
+                     if(found == 'true')  
+                     {  
+                          $(this).show();  
+                     }  
+                     else  
+                     {  
+                          $(this).hide();  
+                     }  
+                });  
+           }  
+      }); 
     </script>
 </head>
 
@@ -136,8 +129,7 @@
 
             <div class="input-group">
                 <div>
-                    <input type="search" id="form1" class="form-control" placeholder="Search" />
-
+                    <input type="search" id="searchbox" class="form-control" placeholder="Search" />
                 </div>
                 <button type="button" class="btn btn-primary" onclick="newContact()">
                     + Add Contact
@@ -159,12 +151,13 @@
                 <form class="needs-validation" novalidate>
                     <div class="form-group pad-bot-5">
                         <label for="firstName">First Name</label>
-                        <input type="text" class="form-control form-control-sm" id="txtFirstName" placeholder="First Name" onblur="validateFirstName(this.value)" required="required">
+                        <input type="text" class="form-control form-control-sm" id="txtFirstName"
+                            placeholder="First Name" onblur="validateFirstName(this.value)" required="required">
                     </div>
                     <div class="form-group pad-bot-5">
                         <label for="lastName">Last Name</label>
-                        <input type="text" class="form-control form-control-sm" id="txtLastName"
-                            placeholder="Last Name" required>
+                        <input type="text" class="form-control form-control-sm" id="txtLastName" placeholder="Last Name"
+                            onblur="validateLastName(this.value)" required>
                     </div>
                     <div class="form-group pad-bot-5">
                         <label for="email">E-Mail</label>
@@ -174,23 +167,13 @@
                     <div class="form-group pad-bot-5">
                         <label for="mobile">Mobile</label>
                         <input type="tel" class="form-control form-control-sm" id="txtMobile"
-                            placeholder="Mobile Number" onblur="validateMobile(this.value)" minlength="10" required>
+                            placeholder="Mobile Number" onblur="validateMobile(this.value)" min-length="10" required>
                     </div>
                     <div class="form-group pad-bot-5">
                         <label for="lastName">Address</label>
                         <input type="text" class="form-control form-control-sm" id="txtAddress"
                             placeholder="20330 Via Augusta, CA">
                     </div>
-                    <!-- <div class="form-group pad-bot-5">
-                        <label for="zip">Zip</label>
-                        <input type="text" class="form-control form-control-sm" id="txtZip"
-                            placeholder="92887">
-                    </div>
-                    <div class="form-group pad-bot-5">
-                        <label for="country">Country</label>
-                        <input type="text" class="form-control form-control-sm" id="txtCountry"
-                            placeholder="The United State Of America">
-                    </div> -->
                     <div class="form-group pad-bot-5">
                         <label for="email">Department</label>
                         <input type="text" class="form-control form-control-sm" id="txtDepartment"
@@ -204,12 +187,12 @@
                     <div class="form-group pad-bot-5">
                         <label for="company">Company</label>
                         <input type="text" class="form-control form-control-sm" id="txtCompany"
-                            placeholder="Name of the Company" required>
+                            placeholder="Name of the Company" onblur="validateCompany(this.value)" required>
                     </div>
                     <div class="form-group pad-bot-5">
                         <label for="avatar">Avatar</label>
                         <input type="text" class="form-control form-control-sm" id="txtAvatar"
-                            placeholder="Avatar cloud link">
+                            placeholder="Avatar cloud link" onblur="validateAvatar(this.value)">
                     </div><br>
                     <div>
                         <button type="button" class="btn btn-primary btn-sm btn-save-skin"
@@ -221,5 +204,7 @@
             </div>
         </div>
     </div>
+    <script src="/js/script.js"></script>
 </body>
+
 </html>
