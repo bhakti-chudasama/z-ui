@@ -1,0 +1,224 @@
+<html>
+
+<head>
+    <title>Zuru UI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+    <link rel="stylesheet" href="/assets/main.css">
+    <script src="/js/script.js"></script>
+    <script>
+        var contactData = [];
+        function highlightRow(x) {
+            x.style.backgroundColor = '#e6e6d5';
+            x.style.cursor = "pointer";
+        }
+        function removeHighlightRow(x) {
+            x.style.backgroundColor = "";
+            x.style.cursor = "auto";
+        }
+        function showDetailCard(contactIdx) {
+            document.getElementById("divNewContact").style.display = "none";
+            document.getElementById("divDetail").style.display = "block";
+            $('.detail-card').empty();
+            let singleContact = contactData[contactIdx];
+            // console.log(JSON.stringify(singleContact));
+
+            // html div 
+            let card = `<br><div class='image'><img src='${singleContact.avatar}'></div><br>
+            <div class='name'>${singleContact.firstName} ${singleContact.lastName}</div>
+            <div class='about'>${singleContact.designation} @ ${singleContact.department}</div><br>
+            <div class='row'><div class='col'>Full Name</div><div class='col'>${singleContact.firstName} ${singleContact.lastName}</div></div>
+            <div class='row'><div class='col'>Email</div><div class='col'>${singleContact.email}</div></div>
+            <div class='row'><div class='col'>Phone</div><div class='col'>${singleContact.phoneNumber}</div></div>
+            <div class='row'><div class='col'>Company</div><div class='col'>${singleContact.company}</div></div>
+            <div class='row'><div class='col'>Address</div><div class='col'>${singleContact.address}</div></div>`
+            $(card).appendTo(".detail-card");
+        }
+        function newContact() {
+            document.getElementById("divDetail").style.display = "none";
+            document.getElementById("divNewContact").style.display = "block";
+        }
+        $(function () {
+            var contacts = [];
+            $.getJSON("/data/sample_data.json", function (data) {
+                contactData = data.contacts;
+                $.each(data.contacts, function (i, f) {
+                    let color = getRandomColor();
+
+                    let tblRow = "<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(" + i + ")'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact" + `${(parseInt(i) + 1).toString()} ` + "' ></div> <div class='col-6 basic-detail'><div id='random-color' style='background-color:" + color + ";'>" + (f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase() + "</div><div>" + f.firstName + " " + f.lastName + "</div><div>" + f.email + "</div></div>" + "<div class='col-5'>" + f.company + "</div></div>"
+                    $(tblRow).appendTo("#info");
+                });
+            });
+        });
+        function bindDataToContactList() {
+            $("#info").empty();
+            $.each(contactData, function (i, f) {
+                let color = getRandomColor();
+                let tblRow = "<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(" + i + ")'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact" + `${(parseInt(i) + 1).toString()} ` + "' ></div> <div class='col-6 basic-detail'><div id='random-color' style='background-color:" + color + ";'>" + (f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase() + "</div><div>" + f.firstName + " " + f.lastName + "</div><div>" + f.email + "</div></div>" + "<div class='col-5'>" + f.company + "</div></div>"
+                $(tblRow).appendTo("#info");
+            });
+        }
+        function saveContact() {
+            let newContact = {
+                "firstName": document.getElementById('txtFirstName').value,
+                "lastName": document.getElementById('txtLastName').value,
+                "email": document.getElementById('txtEmail').value,
+                "phoneNumber": document.getElementById('txtMobile').value,
+                "address": document.getElementById('txtAddress').value,
+                // "zip": document.getElementById('txtZip').value,
+                // "country": document.getElementById('txtCountry').value,
+                "company": document.getElementById('txtCompany').value,
+                "avatar": document.getElementById('txtAvatar').value,
+                "designation": document.getElementById('txtDesignation').value,
+                "department": document.getElementById('txtDepartment').value,
+            }
+            contactData.unshift(newContact);
+            bindDataToContactList();
+
+            alert('Contact saved successfully.!');
+            clearData();
+        }
+        function clearData() {
+            $('input:text').val('');
+            document.getElementById("divNewContact").style.display = "none";
+        }
+    </script>
+</head>
+
+<body class="container-fluid p-0">
+    <header class="header"></header>
+    <div class="sidebar">
+        <ui class="lists">
+            <li class="list-item" style="top: 0;">
+                <i class="bi bi-list"></i>
+            </li>
+            <li style="height: 4vh;">&nbsp;</li>
+            <li class="list-item">
+                <i class="bi bi-house-door"></i>
+            </li>
+            <li class="list-item contact">
+                <i class="bi bi-person-lines-fill"></i>
+            </li>
+            <li class="list-item">
+                <i class="bi bi-file-earmark-spreadsheet"></i>
+            </li>
+            <li class="list-item">
+                <i class="bi bi-clock"></i>
+            </li>
+            <li class="list-item">
+                <i class="bi bi-server"></i>
+            </li>
+            <li class="list-item">
+                <i class="bi bi-calendar3"></i>
+            </li>
+            <li class="list-item">
+                <i class="bi bi-patch-question"></i>
+            </li>
+            <div class="git-link">bjhbjh</div>
+        </ui>
+
+    </div>
+    <div class="main">
+        <div class="icon-contact pad-top-6">
+            <i class="bi bi-safe-fill"></i>
+        </div>
+        <div class="label">
+            <h5>Contacts</h5>
+            <p>welcome to contact page</p>
+        </div>
+        <div class="search">
+
+            <div class="input-group">
+                <div>
+                    <input type="search" id="form1" class="form-control" placeholder="Search" />
+
+                </div>
+                <button type="button" class="btn btn-primary" onclick="newContact()">
+                    + Add Contact
+                </button>
+            </div>
+        </div>
+        <div class="contact-list">
+            <div class="row heading">
+                <div class="col-1">&nbsp;</div>
+                <div class="col-6 ">Basic Info</div>
+                <div class="col-5 ">Company</div>
+            </div>
+            <div id="info"></div>
+        </div>
+        <div class="detail">
+            <div class="detail-card" id="divDetail">&nbsp;
+            </div>
+            <div class="newContact-card" id="divNewContact">
+                <form class="needs-validation" novalidate>
+                    <div class="form-group pad-bot-5">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control form-control-sm" id="txtFirstName" placeholder="First Name" onblur="validateFirstName(this.value)" required="required">
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control form-control-sm" id="txtLastName"
+                            placeholder="Last Name" required>
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="email">E-Mail</label>
+                        <input type="text" class="form-control form-control-sm" id="txtEmail"
+                            placeholder="E-mail address" onblur="validateEmail(this.value)" required>
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="mobile">Mobile</label>
+                        <input type="tel" class="form-control form-control-sm" id="txtMobile"
+                            placeholder="Mobile Number" onblur="validateMobile(this.value)" minlength="10" required>
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="lastName">Address</label>
+                        <input type="text" class="form-control form-control-sm" id="txtAddress"
+                            placeholder="20330 Via Augusta, CA">
+                    </div>
+                    <!-- <div class="form-group pad-bot-5">
+                        <label for="zip">Zip</label>
+                        <input type="text" class="form-control form-control-sm" id="txtZip"
+                            placeholder="92887">
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="country">Country</label>
+                        <input type="text" class="form-control form-control-sm" id="txtCountry"
+                            placeholder="The United State Of America">
+                    </div> -->
+                    <div class="form-group pad-bot-5">
+                        <label for="email">Department</label>
+                        <input type="text" class="form-control form-control-sm" id="txtDepartment"
+                            placeholder="Name of the Department">
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="designation">Designation</label>
+                        <input type="text" class="form-control form-control-sm" id="txtDesignation"
+                            placeholder="Designation">
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="company">Company</label>
+                        <input type="text" class="form-control form-control-sm" id="txtCompany"
+                            placeholder="Name of the Company" required>
+                    </div>
+                    <div class="form-group pad-bot-5">
+                        <label for="avatar">Avatar</label>
+                        <input type="text" class="form-control form-control-sm" id="txtAvatar"
+                            placeholder="Avatar cloud link">
+                    </div><br>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm btn-save-skin"
+                            onclick="saveContact()">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm btn-cancel-skin "
+                            onclick="clearData()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

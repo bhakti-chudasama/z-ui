@@ -1,0 +1,239 @@
+*{
+    /* border:1px solid black; */
+    box-sizing: border-box;
+}
+html, body{
+    width: 100%;
+    height: 100%;
+}
+.container-fluid{
+    /* width: 100%; */
+    padding: 0;
+    display: grid;
+    grid-template: 40px auto/50px auto;
+    background-color:#f8f9fa ;
+    /* padding: 0  */
+}
+.p-0{
+    padding: 0;
+}
+.header{
+    border-bottom:2px solid #f2f2f2;
+}
+.sidebar{
+    grid-column: 1/2;
+    grid-row:1/3;
+    background-image:linear-gradient(#ff8767,#fe65a4) ;
+}
+.lists{
+    list-style: none;
+    text-align: center;
+    vertical-align: middle;
+    position:relative;
+}
+.list-item{
+    padding: 2px 0;
+    height: 50px;
+    width: 50px;
+    font-size: 24px;
+    color: white;
+}
+.git-link{
+    background-color: navy;
+    position: absolute;
+    bottom: 0;
+}
+.contact{
+    border-left: 2px solid white;
+}
+.main{
+    grid-column: 2/3;
+    display: grid;
+    grid-template: 32px 50px 50px auto/40px 40px 50% auto;
+}
+.icon-contact{
+    grid-column: 2/3;
+    grid-row: 2/3;
+    font-size: 30px;
+    text-align: center;
+    color:#ff8767 ;
+    padding-right: 10px;
+}
+.label{
+    grid-column: 3/5;
+    grid-row:2/3;
+}
+.label h5{
+    margin: 0;
+}
+.label p{
+    font-size: 10px;
+    margin: 0;
+}
+.pad-top-6{
+    padding-top:6px ;
+}
+.search{
+    grid-column: 3/4;
+    grid-row:3/4;
+    /* display: inline; */
+}
+.search input{
+    border-radius: 20px;
+    width: 100%;
+    /* padding: 0 10px; */
+    background: #e6e6d5;
+    /* border:none; */
+    flex-grow: 0 !important;
+}
+.search div{
+    display: inline-block;
+}
+.search button{
+    border:none;
+    /* width: 30%; */
+    border-radius: 5px !important;
+    color: white;
+    background-image:linear-gradient(to right,#ff8767,#fe65a4) ;
+    margin-left: 10px;
+    vertical-align: top;
+}
+.form-control{
+    width: 100%;
+}
+.contact-list{
+    grid-column: 3/4;
+    grid-row:4/5;
+}
+.row{
+    margin: 0;
+    padding: 8px 0;
+}
+.heading{
+    background-color: #979797;
+    font-size: 1.2em;
+    color: rgb(53, 52, 52);
+}
+.col-1{
+    vertical-align: middle;
+    padding: 0;
+    text-align: center;
+}
+.col-1 input{
+    vertical-align: middle;
+    margin-top: 12px;
+}
+.col-6{
+/* font-size: 12px; */
+padding: 0;
+}
+.row .col:first-child{
+    flex-grow: 0.5;
+}
+.col{
+    padding: 5px 0;
+}
+.basic-detail{
+    display: grid;
+    grid-template:50% 50%/40px auto ;
+}
+.basic-detail div:first-child{
+    border-radius: 50%;
+    grid-row: 1/3;
+    padding: 0 auto;
+    height: 2.5em;
+    line-height: 2.5em;
+    text-align: center;
+    vertical-align: middle;
+    color:white;
+    font-size: 1em;
+    /* background-color: green ; */
+}
+.basic-detail div:nth-child(2){
+font-size: 15px;
+padding-left: 10px;
+}
+.basic-detail div:nth-child(3){
+    font-size: 10px;
+    padding-left: 10px;
+}
+.detail{
+    grid-column: 4/5;
+    grid-row:4/5;
+    /* margin: 0 50px 0 10px; */
+}
+.detail-card{
+    width: 60%;
+    background: #eea589;
+    background-image:linear-gradient(#ff8767,#f8f9fa) ;
+    margin-left: 50px;
+    /* margin-top:0; */
+    height: 75%;
+    box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2);
+}
+.image{
+    margin: 0 auto;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: mediumpurple;
+}
+.image img{
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+.name{
+    text-align: center;
+    font-weight: bold;
+}
+.about{
+    text-align: center;
+    font-size: 14px;
+}
+.detail-card .row{
+    padding-left: 20px;
+}
+.detail-card .row .col:first-child{
+    font-size: 12px;
+}
+.detail-card .row .col:nth-child(2){
+    font-size: 12px;
+    font-weight: bold;
+}
+#divDetail{
+    display: none;
+}
+.newContact-card{
+    width: 60%;
+    background: #eea589;
+    background-image:linear-gradient(#ff8767,#f8f9fa) ;
+    margin-left: 50px;
+    /* margin-top:0; */
+    min-height: 75%;
+    box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2);
+    padding:20px;
+}
+#divNewContact{
+    display: none;
+}
+.pad-bot-5{
+    padding-bottom: 5px;;
+}
+.btn-save-skin{
+    background-image:linear-gradient(to right,#ff8767,#fe65a4) ;
+    border:none;
+    width: 80px;
+    font-size: 16px;
+}
+.btn-cancel-skin{
+    border:none;
+    width: 80px;
+    font-size: 16px;
+}
+@media(max-width:576px){
+    .contact-list{
+        grid-column: 3/5;
+        /* grid-row:4/5; */
+    }
+}
