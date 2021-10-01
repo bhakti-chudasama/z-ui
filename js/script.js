@@ -1,3 +1,7 @@
+function anywayClick(){
+    document.getElementById("divNewContact").style.display = "none";
+    document.getElementById("divDetail").style.display = "none";
+}
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -15,9 +19,16 @@ function removeHighlightRow(x) {
     x.style.backgroundColor = "";
     x.style.cursor = "auto";
 }
-function newContact() {
+function newContactInGeneralView() {
+    isMobileView = false;
     document.getElementById("divDetail").style.display = "none";
     document.getElementById("divNewContact").style.display = "block";
+}
+function newContactInMobileView(){
+    isMobileView = true;
+    document.getElementById("mobile-view").style.display="none";
+    document.getElementById("divNewContact").style.display="block";
+    document.getElementsByClassName("detail")[0].setAttribute("id", "detail-mobileView");
 }
 function saveContact() {
     console.log(jq);
