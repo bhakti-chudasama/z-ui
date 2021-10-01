@@ -1,10 +1,11 @@
 <html>
 
 <head>
-    <title>Zuru UI</title>
+    <title>Z UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
@@ -14,6 +15,8 @@
 
     <script>
         var contactData = [];
+        var isMobileView = false;
+        var detailInMobilView = false;
         var jq = $;
         function showDetailCard(contactIdx) {
             document.getElementById("divNewContact").style.display = "none";
@@ -40,47 +43,81 @@
                 $.each(data.contacts, function (i, f) {
                     let color = getRandomColor();
 
-                    let tblRow = "<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(" + i + ")'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact" + `${(parseInt(i) + 1).toString()} ` + "' ></div> <div class='col-6 basic-detail'><div id='random-color' style='background-color:" + color + ";'>" + (f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase() + "</div><div>" + f.firstName + " " + f.lastName + "</div><div>" + f.email + "</div></div>" + "<div class='col-5'>" + f.company + "</div></div>"
+                    let tblRow = `<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(${i})'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact${(parseInt(i) + 1).toString()}' ></div>
+                    <div class='col-6 basic-detail'>
+                        <div id='random-color' style='background-color:${color};'>${(f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase()}</div>
+                        <div>${f.firstName}  ${f.lastName}</div>
+                        <div>${f.email}</div>
+                    </div>
+                    <div class='col-5'>${f.company}</div></div>`
                     $(tblRow).appendTo("#info");
+
+                    let mobileViewCard =`<div class='contactCard'>
+                    <div class='image' id='random-color' style='background-color:${color};'><img src='${f.avatar}'></div>
+                    <div><div>${f.firstName} ${f.lastName}</div>
+                    <div>${f.email}</div>
+                    <div>${f.company}</div>
+                    <div>${f.phoneNumber}</div>
+                    <div>${f.designation} @ ${f.department}</div>
+                    <div>${f.address}</div></div>
+                    </div>`
+                    $(mobileViewCard).appendTo("#mobile-view");
                 });
             });
         });
         function bindDataToContactList() {
             $("#info").empty();
+            $("#mobile-view").empty();
             $.each(contactData, function (i, f) {
                 let color = getRandomColor();
                 let tblRow = "<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(" + i + ")'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact" + `${(parseInt(i) + 1).toString()} ` + "' ></div> <div class='col-6 basic-detail'><div id='random-color' style='background-color:" + color + ";'>" + (f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase() + "</div><div>" + f.firstName + " " + f.lastName + "</div><div>" + f.email + "</div></div>" + "<div class='col-5'>" + f.company + "</div></div>"
                 $(tblRow).appendTo("#info");
+                let mobileViewCard =`<div class='contactCard'>
+                    <div class='image' id='random-color' style='background-color:${color};'><img src='${f.avatar}'></div>
+                    <div><div>${f.firstName} ${f.lastName}</div>
+                    <div>${f.email}</div>
+                    <div>${f.company}</div>
+                    <div>${f.phoneNumber}</div>
+                    <div>${f.designation} @ ${f.department}</div>
+                    <div>${f.address}</div></div>
+                    </div>`
+                    $(mobileViewCard).appendTo("#mobile-view");
             });
         }
         function clearData() {
             $('input:text').val('');
+            if(isMobileView == false){
+                //general table view
             document.getElementById("divNewContact").style.display = "none";
+            document.getElementById("mobile-view").style.display="none";
+            }
+            else{
+                //mobile card view
+            document.getElementById("divNewContact").style.display = "none";
+            document.getElementById("mobile-view").style.display="block";
+            }
         }
-        $(document).ready(function(){  
-           $('#searchbox').keyup(function(){  
-                search_contact($(this).val());  
-           });  
-           function search_contact(value){  
-                $('#info .row').each(function(){  
-                     var found = 'false';  
-                     $(this).each(function(){  
-                          if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)  
-                          {  
-                               found = 'true';  
-                          }  
-                     });  
-                     if(found == 'true')  
-                     {  
-                          $(this).show();  
-                     }  
-                     else  
-                     {  
-                          $(this).hide();  
-                     }  
-                });  
-           }  
-      }); 
+        $(document).ready(function () {
+            $('#searchbox').keyup(function () {
+                search_contact($(this).val());
+            });
+            function search_contact(value) {
+                $('#info .row').each(function () {
+                    var found = 'false';
+                    $(this).each(function () {
+                        if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+                            found = 'true';
+                        }
+                    });
+                    if (found == 'true') {
+                        $(this).show();
+                    }
+                    else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
     </script>
 </head>
 
@@ -131,18 +168,29 @@
                 <div>
                     <input type="search" id="searchbox" class="form-control" placeholder="Search" />
                 </div>
-                <button type="button" class="btn btn-primary" onclick="newContact()">
+                <button type="button" id="buttonBig" class="btn btn-primary" onclick="function newContactInGeneralView()">
                     + Add Contact
+                </button>
+                <button type="button" id="buttonSmall" class="btn btn-primary btn-small" onclick="newContactInMobileView()"
+                    data-toggle="Add Contact">
+                    +
                 </button>
             </div>
         </div>
         <div class="contact-list">
-            <div class="row heading">
-                <div class="col-1">&nbsp;</div>
-                <div class="col-6 ">Basic Info</div>
-                <div class="col-5 ">Company</div>
+            <div id="full-screen-view">
+                <div class="row heading">
+                    <div class="col-1">&nbsp;</div>
+                    <div class="col-6 ">Basic Info</div>
+                    <div class="col-5 ">Company</div>
+                </div>
+                <div id="info"></div>
             </div>
-            <div id="info"></div>
+            <div id="mobile-view">
+                <!-- <div class="contactCard">
+                
+                </div> -->
+            </div>
         </div>
         <div class="detail">
             <div class="detail-card" id="divDetail">&nbsp;
