@@ -38,7 +38,7 @@
         }
         $(function () {
             var contacts = [];
-            $.getJSON("/data/sample_data.json", function (data) {
+            $.getJSON("https://bhakti-chudasama.github.io/z-ui/data/sample_data.json", function (data) {
                 contactData = data.contacts;
                 $.each(data.contacts, function (i, f) {
                     let color = getRandomColor();
