@@ -113,7 +113,7 @@ html, body{
 }
 .row{
     margin: 0;
-    padding: 8px 0;
+    padding: 8px 5px;
 }
 .heading{
     background-color: #979797;
@@ -236,7 +236,7 @@ padding-left: 10px;
     width: 80px;
     font-size: 16px;
 }
-@media (min-width:461px) and (max-width:780px){
+@media (min-width:461px) and (max-width:900px){
     .search{
         grid-column: 3/5;
     }
@@ -348,7 +348,8 @@ padding-left: 10px;
     color:white;
     font-size: 1em;
     background-color: black;
-    }#mobile-view{
+    }
+    #mobile-view{
         display: block;
     }
     .newContact-card{
@@ -377,4 +378,10 @@ padding-left: 10px;
 }
 #detail-mobileView{
     grid-column:3/5 ;
+}
+#detail-mobileView-clear{
+    grid-column:4/5
+}
+.edit-btn{
+    padding-top:12px ;
 }

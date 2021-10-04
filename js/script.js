@@ -19,37 +19,18 @@ function newContactInGeneralView() {
     isMobileView = false;
     document.getElementById("divDetail").style.display = "none";
     document.getElementById("divNewContact").style.display = "block";
+    document.getElementById("btnSave").style.display = "block";
+    document.getElementById("btnUpdate").style.display = "none";
 }
 function newContactInMobileView(){
     isMobileView = true;
     document.getElementById("mobile-view").style.display="none";
     document.getElementById("divNewContact").style.display="block";
     document.getElementsByClassName("detail")[0].setAttribute("id", "detail-mobileView");
+    document.getElementById("btnSave").style.display = "block";
+    document.getElementById("btnUpdate").style.display = "none";
 }
-function saveContact() {
-    console.log(jq);
-    let newContact = {
-        "firstName": document.getElementById('txtFirstName').value,
-        "lastName": document.getElementById('txtLastName').value,
-        "email": document.getElementById('txtEmail').value,
-        "phoneNumber": document.getElementById('txtMobile').value,
-        "address": document.getElementById('txtAddress').value,
-        "company": document.getElementById('txtCompany').value,
-        "avatar": document.getElementById('txtAvatar').value,
-        "designation": document.getElementById('txtDesignation').value,
-        "department": document.getElementById('txtDepartment').value,
-    }
 
-    let validateMessage = validateData(newContact);
-    if (validateMessage === '') {
-        contactData.unshift(newContact);
-        bindDataToContactList();
-    } else {
-        alert(validateMessage);
-    }
-    clearData();
-
-}
 function validateEmail(str) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!re.test(str)) {
