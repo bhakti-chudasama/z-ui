@@ -216,6 +216,7 @@
                 search_contact($(this).val());
             });
             function search_contact(value) {
+                if((window.innerWidth < 900)){
                 $('#mobile-view .contactCard').each(function () {
                     var found = 'false';
                     $(this).each(function () {
@@ -229,7 +230,8 @@
                     else {
                         $(this).hide();
                     }
-                });
+                });}
+                else{
                 $('#info .row').each(function () {
                     var found = 'false';
                     $(this).each(function () {
@@ -243,7 +245,7 @@
                     else {
                         $(this).hide();
                     }
-                });
+                });}
                 
             }
         });
