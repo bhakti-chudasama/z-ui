@@ -216,20 +216,6 @@
                 search_contact($(this).val());
             });
             function search_contact(value) {
-                $('#info .row').each(function () {
-                    var found = 'false';
-                    $(this).each(function () {
-                        if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
-                            found = 'true';
-                        }
-                    });
-                    if (found == 'true') {
-                        $(this).show();
-                    }
-                    else {
-                        $(this).hide();
-                    }
-                });
                 $('#mobile-view .contactCard').each(function () {
                     var found = 'false';
                     $(this).each(function () {
@@ -244,6 +230,21 @@
                         $(this).hide();
                     }
                 });
+                $('#info .row').each(function () {
+                    var found = 'false';
+                    $(this).each(function () {
+                        if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+                            found = 'true';
+                        }
+                    });
+                    if (found == 'true') {
+                        $(this).show();
+                    }
+                    else {
+                        $(this).hide();
+                    }
+                });
+                
             }
         });
 
