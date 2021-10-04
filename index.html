@@ -8,24 +8,66 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="https://bhakti-chudasama.github.io/z-ui/assets/main.css">
 
     <script>
+        function reportWindowSize() {
+            let screenHeight = window.innerHeight;
+            let screenWidth = window.innerWidth;
+
+            if(screenWidth < 900){
+                isMobileView = true;
+                document.getElementById("mobile-view").style.display = "block";
+            }else{
+                document.getElementById("mobile-view").style.display = "none";
+            }
+        }
+
+        window.onresize = reportWindowSize;
         var contactData = [];
+        var editIndex = 0;
         var isMobileView = false;
         var detailInMobilView = false;
-        var jq = $;
+        function editDetailCard(contactIdx) {
+            if ((window.innerWidth < 900)) {
+                isMobileView = true;
+            }
+            else{
+                isMobileView = false;
+            }
+            if(isMobileView==true){
+                document.getElementsByClassName("detail")[0].setAttribute("id", "detail-mobileView");
+            }
+            editIndex = contactIdx;
+            document.getElementById("mobile-view").style.display = "none";
+            document.getElementById("divNewContact").style.display = "block";
+            document.getElementById("divDetail").style.display = "none";
+            document.getElementById("btnSave").style.display = "none";
+            document.getElementById("btnUpdate").style.display = "block";
+            $('input:text').val('');
+            let editContact = contactData[contactIdx];
+
+            document.getElementById('txtFirstName').value = editContact.firstName;
+            document.getElementById('txtLastName').value = editContact.lastName;
+            document.getElementById('txtEmail').value = editContact.email;
+            document.getElementById('txtMobile').value = editContact.phoneNumber;
+            document.getElementById('txtAddress').value = editContact.address;
+            document.getElementById('txtCompany').value = editContact.company;
+            document.getElementById('txtAvatar').value = editContact.avatar;
+            document.getElementById('txtDesignation').value = editContact.designation;
+            document.getElementById('txtDepartment').value = editContact.department;
+
+
+        }
         function showDetailCard(contactIdx) {
             document.getElementById("divNewContact").style.display = "none";
             document.getElementById("divDetail").style.display = "block";
             $('.detail-card').empty();
             let singleContact = contactData[contactIdx];
-            // console.log(JSON.stringify(singleContact));
 
-            // html div 
             let card = `<br><div class='image'><img src='${singleContact.avatar}'></div><br>
             <div class='name'>${singleContact.firstName} ${singleContact.lastName}</div>
             <div class='about'>${singleContact.designation} @ ${singleContact.department}</div><br>
@@ -38,21 +80,26 @@
         }
         $(function () {
             var contacts = [];
-            $.getJSON("/data/sample_data.json", function (data) {
+
+            $.getJSON("https://bhakti-chudasama.github.io/z-ui/data/sample_data.json", function (data) {
                 contactData = data.contacts;
                 $.each(data.contacts, function (i, f) {
                     let color = getRandomColor();
 
-                    let tblRow = `<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(${i})'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact${(parseInt(i) + 1).toString()}' ></div>
-                    <div class='col-6 basic-detail'>
-                        <div id='random-color' style='background-color:${color};'>${(f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase()}</div>
+                    let tblRow = `<div class='row'  onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact${(parseInt(i) + 1).toString()}' ></div>
+                    <div class='col-5 basic-detail' onclick='showDetailCard(${i})'>
+                        <div id='random-color' style='background-color:${color};'>
+                            ${(f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase()}
+                        </div>
                         <div>${f.firstName}  ${f.lastName}</div>
                         <div>${f.email}</div>
                     </div>
-                    <div class='col-5'>${f.company}</div></div>`
+                    <div class='col-5' onclick='showDetailCard(${i})'>${f.company}</div>
+                    <div class='col-1 edit-btn' onclick='editDetailCard(${i})'><i class='bi bi-pencil-square'></i></div>
+                    </div>`
                     $(tblRow).appendTo("#info");
 
-                    let mobileViewCard =`<div class='contactCard'>
+                    let mobileViewCard = `<div class='contactCard' onclick='editDetailCard(${i})' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)'>
                     <div class='image' id='random-color' style='background-color:${color};'><img src='${f.avatar}'></div>
                     <div><div>${f.firstName} ${f.lastName}</div>
                     <div>${f.email}</div>
@@ -70,9 +117,22 @@
             $("#mobile-view").empty();
             $.each(contactData, function (i, f) {
                 let color = getRandomColor();
-                let tblRow = "<div class='row' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='showDetailCard(" + i + ")'><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact" + `${(parseInt(i) + 1).toString()} ` + "' ></div> <div class='col-6 basic-detail'><div id='random-color' style='background-color:" + color + ";'>" + (f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase() + "</div><div>" + f.firstName + " " + f.lastName + "</div><div>" + f.email + "</div></div>" + "<div class='col-5'>" + f.company + "</div></div>"
+
+                let tblRow = `<div class='row'  onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' '><div class='col-1'><input class='form-check-input check-box' type='checkbox' id='contact${(parseInt(i) + 1).toString()}' ></div>
+                    <div class='col-5 basic-detail' onclick='showDetailCard(${i})'>
+                        <div id='random-color' style='background-color:${color};'>
+                            ${(f.firstName.substring(0, 1) + f.lastName.substring(0, 1)).toUpperCase()}
+                        </div>
+                        <div>${f.firstName}  ${f.lastName}</div>
+                        <div>${f.email}</div>
+                    </div>
+                    <div class='col-5' onclick='showDetailCard(${i})'>${f.company}</div>
+                    <div class='col-1' onclick='editDetailCard(${i})'><i class='bi bi-pencil-square'></i></div>
+                    </div>`
                 $(tblRow).appendTo("#info");
-                let mobileViewCard =`<div class='contactCard'>
+
+
+                let mobileViewCard = `<div class='contactCard' onmouseover='highlightRow(this)' onmouseout='removeHighlightRow(this)' onclick='editDetailCard(${i})'>
                     <div class='image' id='random-color' style='background-color:${color};'><img src='${f.avatar}'></div>
                     <div><div>${f.firstName} ${f.lastName}</div>
                     <div>${f.email}</div>
@@ -81,27 +141,97 @@
                     <div>${f.designation} @ ${f.department}</div>
                     <div>${f.address}</div></div>
                     </div>`
-                    $(mobileViewCard).appendTo("#mobile-view");
+                $(mobileViewCard).appendTo("#mobile-view");
             });
         }
         function clearData() {
+            editIndex = 0;
             $('input:text').val('');
-            if(isMobileView == false){
+            if (isMobileView == false) {
                 //general table view
-            document.getElementById("divNewContact").style.display = "none";
-            document.getElementById("mobile-view").style.display="none";
+                document.getElementById("divNewContact").style.display = "none";
+                document.getElementById("mobile-view").style.display="none";
             }
-            else{
+            else {
                 //mobile card view
-            document.getElementById("divNewContact").style.display = "none";
-            document.getElementById("mobile-view").style.display="block";
+                document.getElementById("divNewContact").style.display = "none";
+                document.getElementById("mobile-view").style.display = "block";
+                document.getElementsByClassName("detail")[0].setAttribute("id", "detail-mobileView-clear");
             }
         }
+        function saveContact() {
+            let newContact = {
+                "firstName": document.getElementById('txtFirstName').value,
+                "lastName": document.getElementById('txtLastName').value,
+                "email": document.getElementById('txtEmail').value,
+                "phoneNumber": document.getElementById('txtMobile').value,
+                "address": document.getElementById('txtAddress').value,
+                "company": document.getElementById('txtCompany').value,
+                "avatar": document.getElementById('txtAvatar').value,
+                "designation": document.getElementById('txtDesignation').value,
+                "department": document.getElementById('txtDepartment').value,
+            }
+
+            let validateMessage = validateData(newContact);
+            if (validateMessage === '') {
+                contactData.unshift(newContact);
+                bindDataToContactList();
+            } else {
+                alert(validateMessage);
+            }
+            clearData();
+
+        }
+        function updateContact() {
+            if ((window.innerWidth < 900)) {
+                isMobileView = true;
+            }
+            else {
+                isMobileView = false;
+            }
+            let updatedContact = {
+                "firstName": document.getElementById('txtFirstName').value,
+                "lastName": document.getElementById('txtLastName').value,
+                "email": document.getElementById('txtEmail').value,
+                "phoneNumber": document.getElementById('txtMobile').value,
+                "address": document.getElementById('txtAddress').value,
+                "company": document.getElementById('txtCompany').value,
+                "avatar": document.getElementById('txtAvatar').value,
+                "designation": document.getElementById('txtDesignation').value,
+                "department": document.getElementById('txtDepartment').value
+            }
+
+            let validateMessage = validateData(updatedContact);
+            if (validateMessage === '') {
+                contactData[editIndex] = updatedContact;
+                bindDataToContactList();
+            } else {
+                alert(validateMessage);
+            }
+            clearData();
+        }
+
         $(document).ready(function () {
             $('#searchbox').keyup(function () {
                 search_contact($(this).val());
             });
             function search_contact(value) {
+                if((window.innerWidth < 900)){
+                $('#mobile-view .contactCard').each(function () {
+                    var found = 'false';
+                    $(this).each(function () {
+                        if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+                            found = 'true';
+                        }
+                    });
+                    if (found == 'true') {
+                        $(this).show();
+                    }
+                    else {
+                        $(this).hide();
+                    }
+                });}
+                else{
                 $('#info .row').each(function () {
                     var found = 'false';
                     $(this).each(function () {
@@ -115,9 +245,11 @@
                     else {
                         $(this).hide();
                     }
-                });
+                });}
+                
             }
         });
+
     </script>
 </head>
 
@@ -150,7 +282,6 @@
             <li class="list-item">
                 <i class="bi bi-patch-question"></i>
             </li>
-            <div class="git-link">bjhbjh</div>
         </ui>
 
     </div>
@@ -168,11 +299,11 @@
                 <div>
                     <input type="search" id="searchbox" class="form-control" placeholder="Search" />
                 </div>
-                <button type="button" id="buttonBig" class="btn btn-primary" onclick="function newContactInGeneralView()">
+                <button type="button" id="buttonBig" class="btn btn-primary" onclick="newContactInGeneralView()">
                     + Add Contact
                 </button>
-                <button type="button" id="buttonSmall" class="btn btn-primary btn-small" onclick="newContactInMobileView()"
-                    data-toggle="Add Contact">
+                <button type="button" id="buttonSmall" class="btn btn-primary btn-small"
+                    onclick="newContactInMobileView()" data-toggle="Add Contact">
                     +
                 </button>
             </div>
@@ -181,15 +312,14 @@
             <div id="full-screen-view">
                 <div class="row heading">
                     <div class="col-1">&nbsp;</div>
-                    <div class="col-6 ">Basic Info</div>
+                    <div class="col-5 ">Basic Info</div>
                     <div class="col-5 ">Company</div>
+                    <div class="col-1">Edit</div>
                 </div>
                 <div id="info"></div>
             </div>
             <div id="mobile-view">
-                <!-- <div class="contactCard">
                 
-                </div> -->
             </div>
         </div>
         <div class="detail">
@@ -243,8 +373,10 @@
                             placeholder="Avatar cloud link" onblur="validateAvatar(this.value)">
                     </div><br>
                     <div>
-                        <button type="button" class="btn btn-primary btn-sm btn-save-skin"
+                        <button type="button" id="btnSave" class="btn btn-primary btn-sm btn-save-skin"
                             onclick="saveContact()">Save</button>
+                        <button type="button" id="btnUpdate" class="btn btn-primary btn-sm btn-save-skin"
+                            onclick="updateContact()">Update</button>
                         <button type="button" class="btn btn-secondary btn-sm btn-cancel-skin "
                             onclick="clearData()">Cancel</button>
                     </div>
@@ -252,7 +384,7 @@
             </div>
         </div>
     </div>
-    <script src="/js/script.js"></script>
+    <script src="https://bhakti-chudasama.github.io/z-ui/js/script.js"></script>
 </body>
 
 </html>
