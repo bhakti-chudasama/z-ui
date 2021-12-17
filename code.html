@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sales By Match : Krupali Sanghani</title>
+   
+
+</head>
+
+<body>
+    <label> <b>Enter number of the socks in the pile : </b>
+        <input type="number" id="n" maxlength="2">
+        <br /><br />
+        <label><b>Enter color of ech sock : </b></label>
+        <input type="text" id="color">
+        <br /><br />
+        <button id="btnShow">Show pairs</button>
+        <br /><br />
+        <label><b>Total number of matching pairs</b></label>
+        <p id="pair" style="font-size: 20px;color: blue;"></p>
+
+
+
+        <script>
+            // document.getElementById("btnShow").addEventListener("click",pair);
+            function getPairs() {
+                let num = document.getElementById("n").value;
+                let colorInput = document.getElementById("color").value;
+                let arrColors = colorInput.split(" ");
+
+                if (arrColors.length == num) {
+                    var totalPair = 0
+                    arrColors.sort()
+                    for (let i = 0; i < num; i++) {
+                        if (arrColors[i] == arrColors[i + 1]) {
+                            i++
+                            totalPair++
+                        }
+                    }
+                    document.getElementById("pair").innerHTML = totalPair;
+                }
+                else {
+                    document.getElementById("pair").innerHTML = "Error: Input Mismatch";
+                }
+
+            }
+            document.getElementById("btnShow").addEventListener("click", function () {
+                getPairs();
+            });
+        </script>
+
+</body>
+
+</html>
