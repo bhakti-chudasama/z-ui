@@ -1,7 +1,6 @@
 var str = 'aabbcd';
 function isValid(str) {
     var splitStr = str.split('');
-    console.log(splitStr);
     var maxCount = 0;
     var minCount = 0;
     let strObj = {}
@@ -17,8 +16,6 @@ function isValid(str) {
     let arrObj = Object.values(strObj);
     var max = Math.max(...arrObj);
     var min = Math.min(...arrObj)
-    console.log(min);
-    console.log(max);
 
     for (let i = 0; i < arrObj.length; i++) {
         if (arrObj[i] === max) {
